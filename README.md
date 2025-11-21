@@ -7,7 +7,7 @@ Migration complète Pandas → PySpark avec méthodologie Agile, tests unitaires
 ```powershell
 # Windows PowerShell
 .\docker-build.ps1       # Build image
-.\docker-start.ps1       # Start services  
+.\docker-start.ps1       # Start services
 .\get-token.ps1          # Get Jupyter token
 .\run-tests.ps1          # Run tests
 

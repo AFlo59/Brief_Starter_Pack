@@ -7,5 +7,5 @@ pour le traitement distribué des données.
 
 from .pipeline import FreshKartPySparkPipeline
 
-__all__ = ['FreshKartPySparkPipeline']
-__version__ = '1.0.0'
+__all__ = ["FreshKartPySparkPipeline"]
+__version__ = "1.0.0"

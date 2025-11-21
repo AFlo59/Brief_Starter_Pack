@@ -6,7 +6,7 @@ Cette collection de notebooks vous guide dans la migration complète du pipeline
 
 ## 📂 Structure des notebooks
 
-### 1. `01_introduction_pyspark.ipynb` 
+### 1. `01_introduction_pyspark.ipynb`
 **🎯 Découverte et premiers pas**
 - Introduction aux concepts PySpark
 - Comparaison directe Pandas vs PySpark
@@ -14,7 +14,7 @@ Cette collection de notebooks vous guide dans la migration complète du pipeline
 - ⏱️ **Durée : 30-45 minutes**
 
 ### 2. `02_pyspark_avance.ipynb`
-**🚀 Techniques avancées**  
+**🚀 Techniques avancées**
 - Optimisations (cache, broadcast, partitioning)
 - Fonctions avancées PySpark
 - Gestion des erreurs et debugging
@@ -23,12 +23,12 @@ Cette collection de notebooks vous guide dans la migration complète du pipeline
 ### 3. `03_exercice_freshkart_pyspark.ipynb` ⭐
 **💼 Exercice principal complet**
 - Pipeline FreshKart complet en PySpark
-- Reproduction du pipeline `partie2.ipynb` 
+- Reproduction du pipeline `partie2.ipynb`
 - Objectif : < 15 secondes vs 45s Pandas
 - Toutes les optimisations appliquées
 - ⏱️ **Durée : 1-2 heures**
 
-### 4. `04_migration_comparison_pandas_pyspark.ipynb` 
+### 4. `04_migration_comparison_pandas_pyspark.ipynb`
 **🥊 Comparaison round par round**
 - Exécution côte à côte Pandas vs PySpark
 - Mesure de performance étape par étape
@@ -79,7 +79,7 @@ wsl
 
 ### Compétences techniques
 - ✅ **Chargement optimisé** : Pattern matching vs boucles
-- ✅ **Explosion JSON native** : `explode()` vs boucles manuelles  
+- ✅ **Explosion JSON native** : `explode()` vs boucles manuelles
 - ✅ **Jointures distribuées** : `broadcast()` et optimisations
 - ✅ **Cache intelligent** : `.cache()` sur DataFrames réutilisés
 - ✅ **Agrégations distribuées** : `groupBy()` vs `groupby()`

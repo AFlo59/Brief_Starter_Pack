@@ -7,5 +7,5 @@ utilisant pandas pour le traitement des données.
 
 from .pipeline import FreshKartPandasPipeline
 
-__all__ = ['FreshKartPandasPipeline']
-__version__ = '1.0.0'
+__all__ = ["FreshKartPandasPipeline"]
+__version__ = "1.0.0"
