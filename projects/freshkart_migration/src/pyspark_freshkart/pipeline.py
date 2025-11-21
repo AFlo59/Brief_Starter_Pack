@@ -8,13 +8,9 @@ migré vers PySpark pour améliorer les performances.
 import os
 
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import (
-    col,
-    countDistinct,
-    explode,
-    sum as F_sum,
-    to_date,
-)
+from pyspark.sql.functions import col, countDistinct, explode
+from pyspark.sql.functions import sum as F_sum
+from pyspark.sql.functions import to_date
 
 
 class FreshKartPySparkPipeline:
