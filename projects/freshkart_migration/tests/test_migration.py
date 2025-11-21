@@ -169,8 +169,8 @@ class TestFullPipeline:
 
     def test_full_pipeline_row_count(self, pandas_pipeline, pyspark_pipeline):
         """Vérifie que le nombre de lignes finales est identique"""
-        result_pd = pandas_pipeline.run_full_pipeline()
-        result_spark = pyspark_pipeline.run_full_pipeline()
+        result_pd = pandas_pipeline.run_full_pipeline(save_to_db=False)
+        result_spark = pyspark_pipeline.run_full_pipeline(save_to_db=False)
 
         count_pd = len(result_pd)
         count_spark = result_spark.count()
@@ -181,8 +181,8 @@ class TestFullPipeline:
 
     def test_full_pipeline_columns(self, pandas_pipeline, pyspark_pipeline):
         """Vérifie que les colonnes sont identiques"""
-        result_pd = pandas_pipeline.run_full_pipeline()
-        result_spark = pyspark_pipeline.run_full_pipeline()
+        result_pd = pandas_pipeline.run_full_pipeline(save_to_db=False)
+        result_spark = pyspark_pipeline.run_full_pipeline(save_to_db=False)
 
         cols_pd = set(result_pd.columns)
         cols_spark = set(result_spark.columns)
@@ -192,9 +192,9 @@ class TestFullPipeline:
         ), f"Colonnes différentes: Pandas={cols_pd}, PySpark={cols_spark}"
 
     def test_full_pipeline_revenue_sum(self, pandas_pipeline, pyspark_pipeline):
-        """Vérifie que le revenu total est identique (à 0.01€ près)"""
-        result_pd = pandas_pipeline.run_full_pipeline()
-        result_spark = pyspark_pipeline.run_full_pipeline()
+        """Vérifie que le revenu total est identique (avec tolérance)"""
+        result_pd = pandas_pipeline.run_full_pipeline(save_to_db=False)
+        result_spark = pyspark_pipeline.run_full_pipeline(save_to_db=False)
 
         total_pd = result_pd["net_revenue_eur"].sum()
         total_spark = result_spark.agg({"net_revenue_eur": "sum"}).collect()[0][0]
@@ -208,13 +208,13 @@ class TestFullPipeline:
     def test_full_pipeline_sample_comparison(self, pandas_pipeline, pyspark_pipeline):
         """Compare un échantillon des résultats ligne par ligne"""
         result_pd = (
-            pandas_pipeline.run_full_pipeline()
+            pandas_pipeline.run_full_pipeline(save_to_db=False)
             .sort_values(["date", "city", "channel"])
             .reset_index(drop=True)
             .head(10)
         )
         result_spark_df = (
-            pyspark_pipeline.run_full_pipeline()
+            pyspark_pipeline.run_full_pipeline(save_to_db=False)
             .orderBy("date", "city", "channel")
             .limit(10)
             .toPandas()
@@ -244,12 +244,12 @@ class TestPerformance:
 
         # Pandas
         start = time.time()
-        pandas_pipeline.run_full_pipeline()
+        pandas_pipeline.run_full_pipeline(save_to_db=False)
         pandas_time = time.time() - start
 
         # PySpark
         start = time.time()
-        pyspark_pipeline.run_full_pipeline()
+        pyspark_pipeline.run_full_pipeline(save_to_db=False)
         pyspark_time = time.time() - start
 
         print(f"\n⏱️  Temps Pandas: {pandas_time:.2f}s")

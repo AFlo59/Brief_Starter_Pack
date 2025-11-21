@@ -7,6 +7,7 @@ en utilisant Pandas. Sert de référence pour la migration PySpark.
 
 import glob
 import os
+import sqlite3
 from typing import Tuple
 
 import pandas as pd
@@ -216,7 +217,20 @@ class FreshKartPandasPipeline:
         print(f"📊 Stats agrégées: {len(stats):,} lignes")
         return stats
 
-    def run_full_pipeline(self) -> pd.DataFrame:
+    def save_to_sqlite(self, df: pd.DataFrame, db_path: str = "freshkart_pandas.db"):
+        """
+        Sauvegarde le résultat final dans SQLite
+
+        Args:
+            df: DataFrame à sauvegarder
+            db_path: Chemin vers la base de données SQLite
+        """
+        conn = sqlite3.connect(db_path)
+        df.to_sql("daily_stats", conn, if_exists="replace", index=False)
+        conn.close()
+        print(f"💾 Données sauvegardées dans {db_path} (table: daily_stats)")
+
+    def run_full_pipeline(self, save_to_db: bool = True) -> pd.DataFrame:
         """
         Exécute le pipeline complet
 
@@ -246,6 +260,10 @@ class FreshKartPandasPipeline:
 
         # 7. Agréger stats quotidiennes
         daily_stats = self.aggregate_daily_stats(orders_with_refunds)
+
+        # 8. Sauvegarder en SQLite (optionnel)
+        if save_to_db:
+            self.save_to_sqlite(daily_stats)
 
         print("\n✅ Pipeline Pandas terminé !")
         print(f"📈 Résultat final: {len(daily_stats):,} lignes")

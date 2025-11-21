@@ -233,7 +233,25 @@ class FreshKartPySparkPipeline:
 
         return stats
 
-    def run_full_pipeline(self):
+    def save_to_sqlite(self, df, db_path: str = "freshkart_pyspark.db"):
+        """
+        Sauvegarde le résultat final dans SQLite
+
+        Args:
+            df: DataFrame PySpark à sauvegarder
+            db_path: Chemin vers la base de données SQLite
+        """
+        # Convertir en Pandas pour sauvegarder
+        pandas_df = df.toPandas()
+
+        import sqlite3
+
+        conn = sqlite3.connect(db_path)
+        pandas_df.to_sql("daily_stats", conn, if_exists="replace", index=False)
+        conn.close()
+        print(f"💾 Données sauvegardées dans {db_path} (table: daily_stats)")
+
+    def run_full_pipeline(self, save_to_db: bool = True):
         """
         Exécute le pipeline complet
 
@@ -263,6 +281,10 @@ class FreshKartPySparkPipeline:
 
         # 7. Agréger stats quotidiennes
         daily_stats = self.aggregate_daily_stats(orders_with_refunds)
+
+        # 8. Sauvegarder en SQLite (optionnel)
+        if save_to_db:
+            self.save_to_sqlite(daily_stats)
 
         print("\n✅ Pipeline PySpark terminé !")
         print(f"📈 Résultat final: {daily_stats.count():,} lignes")
