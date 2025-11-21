@@ -197,7 +197,7 @@ def compare_pipelines(data_path):
 
 if __name__ == "__main__":
     # Chemin par défaut
-    data_path = "/workspace/Brief_Starter_Pack/data/march-input"
+    data_path = "/workspace/data/march-input"
 
     # Permettre de passer le chemin en argument
     if len(sys.argv) > 1:
