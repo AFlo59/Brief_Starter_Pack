@@ -37,20 +37,41 @@ def spark():
 @pytest.fixture(scope="session")
 def data_path():
     """Fixture pour le chemin des données"""
-    # Adapter selon l'environnement (Docker vs local)
-    path = "/workspace/data/march-input"
-    if not os.path.exists(path):
-        # Fallback pour exécution locale
-        path = os.path.join(
-            os.path.dirname(__file__),
-            "..",
-            "..",
-            "..",
-            "Starter stack pour Data Engineers - Partie 1",
-            "data",
-            "march-input",
-        )
-    return path
+    # Docker environment
+    docker_path = "/workspace/data/march-input"
+    if os.path.exists(docker_path):
+        return docker_path
+
+    # GitHub Actions / CI environment - données à la racine du repo
+    ci_path = os.path.join(
+        os.path.dirname(__file__),
+        "..",
+        "..",
+        "..",
+        "data",
+        "march-input",
+    )
+    ci_path_abs = os.path.abspath(ci_path)
+    if os.path.exists(ci_path_abs):
+        return ci_path_abs
+
+    # Local development fallback
+    local_path = os.path.join(
+        os.path.dirname(__file__),
+        "..",
+        "data",
+        "march-input",
+    )
+    local_path_abs = os.path.abspath(local_path)
+    if os.path.exists(local_path_abs):
+        return local_path_abs
+
+    raise FileNotFoundError(
+        f"Data directory not found. Tried:\n"
+        f"  - Docker: {docker_path}\n"
+        f"  - CI: {ci_path_abs}\n"
+        f"  - Local: {local_path_abs}"
+    )
 
 
 @pytest.fixture(scope="session")
