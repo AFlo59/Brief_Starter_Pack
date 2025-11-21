@@ -274,7 +274,7 @@ class FreshKartPandasPipeline:
 def main():
     """Fonction principale pour tester le pipeline"""
     # Chemin des données
-    data_path = "/workspace/Brief_Starter_Pack/data/march-input"
+    data_path = "/workspace/data/march-input"
 
     # Créer et exécuter le pipeline
     pipeline = FreshKartPandasPipeline(data_path)
