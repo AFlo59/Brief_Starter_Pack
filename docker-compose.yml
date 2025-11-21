@@ -1,0 +1,20 @@
+services:
+  pyspark-jupyter:
+    build: .
+    container_name: freshkart-pyspark
+    ports:
+      - "8888:8888"  # Jupyter Lab
+      - "8080:8080"  # VS Code (code-server)
+    volumes:
+      # Monter TOUT le dossier Brief_Starter_Pack
+      - .:/workspace/Brief_Starter_Pack
+      # Créer un lien symbolique vers data pour compatibilité
+      - ./data:/workspace/data:ro
+      - ./notebooks:/workspace/notebooks
+      - ./scripts:/workspace/scripts:ro
+      - ./config:/workspace/config
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+      - GRANT_SUDO=yes
+    restart: unless-stopped
+    user: sparkuser
