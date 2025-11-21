@@ -8,7 +8,13 @@ migré vers PySpark pour améliorer les performances.
 import os
 
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import col, countDistinct, explode, to_date
+from pyspark.sql.functions import (
+    col,
+    countDistinct,
+    explode,
+    sum as F_sum,
+    to_date,
+)
 
 
 class FreshKartPySparkPipeline:
@@ -62,9 +68,14 @@ class FreshKartPySparkPipeline:
 
         # Charger les remboursements
         refunds_path = os.path.join(self.data_path, "refunds.csv")
-        self.refunds_df = (
+        refunds_raw = (
             self.spark.read.option("header", "true").option("inferSchema", "true").csv(refunds_path)
         )
+
+        # Convertir amount en double et filtrer les valeurs invalides
+        self.refunds_df = refunds_raw.withColumn("amount", col("amount").cast("double"))
+        self.refunds_df = self.refunds_df.filter(col("amount").isNotNull())
+
         print(f"  ✅ Remboursements: {self.refunds_df.count():,} lignes")
 
         return self.customers_df, self.orders_df, self.refunds_df
@@ -94,6 +105,9 @@ class FreshKartPySparkPipeline:
         Returns:
             DataFrame avec items explosés
         """
+        # Renommer created_at en order_date pour cohérence
+        orders_df = orders_df.withColumnRenamed("created_at", "order_date")
+
         # Exploser les items et extraire les champs
         exploded = orders_df.select(
             "order_id",
@@ -107,9 +121,9 @@ class FreshKartPySparkPipeline:
             "customer_id",
             "order_date",
             "channel",
-            col("item.product_id").alias("item_product_id"),
-            col("item.qty").alias("item_qty"),
-            col("item.unit_price").alias("item_unit_price"),
+            col("item.sku").alias("item_product_id"),
+            col("item.qty").cast("int").alias("item_qty"),
+            col("item.unit_price").cast("double").alias("item_unit_price"),
         )
 
         count = exploded.count()
@@ -134,7 +148,7 @@ class FreshKartPySparkPipeline:
 
         # Agréger par commande
         revenue_df = with_revenue.groupBy("order_id", "customer_id", "order_date", "channel").agg(
-            sum("item_qty").alias("total_items"), sum("line_revenue").alias("gross_revenue")
+            F_sum("item_qty").alias("total_items"), F_sum("line_revenue").alias("gross_revenue")
         )
 
         count = revenue_df.count()
@@ -174,7 +188,9 @@ class FreshKartPySparkPipeline:
             DataFrame avec refunds
         """
         # Agréger les remboursements par commande
-        refunds_agg = self.refunds_df.groupBy("order_id").agg(sum("amount").alias("refund_amount"))
+        refunds_agg = self.refunds_df.groupBy("order_id").agg(
+            F_sum("amount").alias("refund_amount")
+        )
 
         # Joindre avec les commandes
         result = orders_df.join(refunds_agg, on="order_id", how="left")
@@ -208,10 +224,10 @@ class FreshKartPySparkPipeline:
             .agg(
                 countDistinct("order_id").alias("orders_count"),
                 countDistinct("customer_id").alias("unique_customers"),
-                sum("total_items").alias("items_sold"),
-                sum("gross_revenue").alias("gross_revenue_eur"),
-                sum("refund_amount").alias("refunds_eur"),
-                sum("net_revenue").alias("net_revenue_eur"),
+                F_sum("total_items").alias("items_sold"),
+                F_sum("gross_revenue").alias("gross_revenue_eur"),
+                F_sum("refund_amount").alias("refunds_eur"),
+                F_sum("net_revenue").alias("net_revenue_eur"),
             )
             .orderBy("date", "city", "channel")
         )

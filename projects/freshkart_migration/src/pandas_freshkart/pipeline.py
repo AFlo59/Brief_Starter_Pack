@@ -56,6 +56,13 @@ class FreshKartPandasPipeline:
         # Charger les remboursements
         refunds_path = os.path.join(self.data_path, "refunds.csv")
         self.refunds_df = pd.read_csv(refunds_path)
+
+        # Convertir amount en numérique, les valeurs invalides deviennent NaN
+        self.refunds_df["amount"] = pd.to_numeric(self.refunds_df["amount"], errors="coerce")
+
+        # Filtrer les lignes avec amount valide
+        self.refunds_df = self.refunds_df.dropna(subset=["amount"])
+
         print(f"  ✅ Remboursements: {len(self.refunds_df):,} lignes")
 
         return self.customers_df, self.orders_df, self.refunds_df
@@ -82,11 +89,17 @@ class FreshKartPandasPipeline:
         Returns:
             DataFrame avec items explosés
         """
+        # Renommer created_at en order_date pour cohérence
+        orders_df = orders_df.rename(columns={"created_at": "order_date"})
+
         # Exploser la colonne items
         exploded = orders_df.explode("items", ignore_index=True)
 
         # Extraire les champs de chaque item
         items_df = pd.json_normalize(exploded["items"])
+
+        # Renommer sku en product_id pour cohérence
+        items_df = items_df.rename(columns={"sku": "product_id"})
 
         # Combiner avec les autres colonnes
         result = pd.concat(

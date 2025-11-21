@@ -14,8 +14,8 @@ from pyspark.sql import SparkSession
 # Ajouter le path des sources
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "src"))
 
-from pandas.pipeline import FreshKartPandasPipeline  # noqa: E402
-from pyspark.pipeline import FreshKartPySparkPipeline  # noqa: E402
+from pandas_freshkart.pipeline import FreshKartPandasPipeline  # noqa: E402
+from pyspark_freshkart.pipeline import FreshKartPySparkPipeline  # noqa: E402
 
 
 def print_section(title):
