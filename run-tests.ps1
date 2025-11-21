@@ -61,7 +61,7 @@ Write-Host "`n============================`n" -ForegroundColor Cyan
 
 if ($exitCode -eq 0) {
     Write-Host "✅ Tous les tests sont passés!" -ForegroundColor Green
-    
+
     if ($RunCoverage) {
         Write-Host "`n📊 Rapport coverage généré dans htmlcov/index.html" -ForegroundColor Cyan
     }

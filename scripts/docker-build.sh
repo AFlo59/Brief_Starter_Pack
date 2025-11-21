@@ -6,7 +6,8 @@ cd "$(dirname "$0")/.." || exit 1
 echo "🐳 Construction de l'image Docker PySpark..."
 echo ""
 
-docker-compose build
+# Build sans cache pour s'assurer que requirements.txt est pris en compte
+docker-compose build --no-cache
 
 if [ $? -eq 0 ]; then
     echo ""

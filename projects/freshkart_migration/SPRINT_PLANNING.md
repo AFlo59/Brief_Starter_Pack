@@ -2,10 +2,10 @@
 
 ## 🎯 Vue d'ensemble du projet
 
-**Durée** : 3 jours (24h productives)  
-**Équipe** : 1 Data Engineer  
-**Méthodologie** : Agile Scrum (sprints courts)  
-**Objectif** : Migration Pandas → PySpark avec garantie d'équivalence  
+**Durée** : 3 jours (24h productives)
+**Équipe** : 1 Data Engineer
+**Méthodologie** : Agile Scrum (sprints courts)
+**Objectif** : Migration Pandas → PySpark avec garantie d'équivalence
 
 ---
 
@@ -192,29 +192,29 @@ Tâches restantes
 ## 📞 Daily Standup (Format Agile)
 
 ### Jour 1 (Fin)
-**Hier** : Setup projet  
-**Aujourd'hui** : Pipeline Pandas complet ✅  
-**Blocages** : Aucun  
+**Hier** : Setup projet
+**Aujourd'hui** : Pipeline Pandas complet ✅
+**Blocages** : Aucun
 
 ### Jour 2 (Matin)
-**Hier** : Pipeline Pandas  
-**Aujourd'hui** : Migration PySpark + Tests  
-**Blocages** : Aucun  
+**Hier** : Pipeline Pandas
+**Aujourd'hui** : Migration PySpark + Tests
+**Blocages** : Aucun
 
 ### Jour 2 (Fin)
-**Hier** : Migration PySpark  
-**Aujourd'hui** : Tests passent, validation résultats  
-**Blocages** : Notebooks à corriger  
+**Hier** : Migration PySpark
+**Aujourd'hui** : Tests passent, validation résultats
+**Blocages** : Notebooks à corriger
 
 ### Jour 3 (Matin)
-**Hier** : Tests + validation  
-**Aujourd'hui** : Pre-commit + CI/CD + Doc  
-**Blocages** : Aucun  
+**Hier** : Tests + validation
+**Aujourd'hui** : Pre-commit + CI/CD + Doc
+**Blocages** : Aucun
 
 ### Jour 3 (Fin)
-**Hier** : Industrialisation  
-**Aujourd'hui** : Présentation  
-**Blocages** : Aucun  
+**Hier** : Industrialisation
+**Aujourd'hui** : Présentation
+**Blocages** : Aucun
 
 ---
 
@@ -243,6 +243,6 @@ Tâches restantes
 
 ---
 
-**Dernière mise à jour** : Jour 2, 18h00  
-**Statut global** : 🟢 On track  
+**Dernière mise à jour** : Jour 2, 18h00
+**Statut global** : 🟢 On track
 **Risques** : 🟡 Notebooks à corriger (mineur)

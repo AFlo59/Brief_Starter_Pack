@@ -42,6 +42,10 @@ COPY --chown=sparkuser:sparkuser requirements.txt .
 RUN /workspace/venv/bin/pip install --upgrade pip && \
     /workspace/venv/bin/pip install -r requirements.txt
 
+# Copier le script d'initialisation
+COPY --chown=sparkuser:sparkuser docker-entrypoint.sh /workspace/
+RUN chmod +x /workspace/docker-entrypoint.sh
+
 # Exposer les ports Jupyter et VS Code
 EXPOSE 8888 8080
 
@@ -49,11 +53,5 @@ EXPOSE 8888 8080
 ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
 ENV PATH=/workspace/venv/bin:$PATH
 
-# Créer script de démarrage pour lancer Jupyter + code-server
-RUN echo '#!/bin/bash\n\
-code-server --bind-addr 0.0.0.0:8080 --auth none /workspace &\n\
-/workspace/venv/bin/jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root --notebook-dir=/workspace\n\
-' > /workspace/start.sh && chmod +x /workspace/start.sh
-
-# Commande par défaut : Lancer les deux services
-CMD ["/bin/bash", "/workspace/start.sh"]
+# Commande par défaut : Lancer le script d'initialisation
+CMD ["/workspace/docker-entrypoint.sh"]

@@ -1,22 +1,19 @@
 """Configuration pytest pour les tests de migration"""
 
-import pytest
-import sys
 import os
+import sys
+
+import pytest
 
 # Ajouter le path des sources pour les imports
 project_root = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.join(project_root, 'src'))
+sys.path.insert(0, os.path.join(project_root, "src"))
 
 
 def pytest_configure(config):
     """Configuration pytest personnalisée"""
-    config.addinivalue_line(
-        "markers", "slow: marque les tests lents à exécuter"
-    )
-    config.addinivalue_line(
-        "markers", "benchmark: tests de performance"
-    )
+    config.addinivalue_line("markers", "slow: marque les tests lents à exécuter")
+    config.addinivalue_line("markers", "benchmark: tests de performance")
 
 
 @pytest.fixture(scope="session", autouse=True)

@@ -12,7 +12,7 @@ if [ $? -eq 0 ]; then
     echo ""
     echo "⏳ Attente du démarrage des services (10s)..."
     sleep 10
-    
+
     echo ""
     echo "✅ Services démarrés !"
     echo ""
