@@ -6,13 +6,12 @@ services:
       - "8888:8888"  # Jupyter Lab
       - "8080:8080"  # VS Code (code-server)
     volumes:
-      # Monter TOUT le dossier Brief_Starter_Pack
-      - .:/workspace/Brief_Starter_Pack
-      # Créer un lien symbolique vers data pour compatibilité
-      - ./data:/workspace/data:ro
-      - ./notebooks:/workspace/notebooks
-      - ./scripts:/workspace/scripts:ro
-      - ./config:/workspace/config
+      # Monter uniquement les dossiers nécessaires pour le travail
+      - ./data:/workspace/data:ro  # Données en lecture seule
+      - ./notebooks:/workspace/notebooks  # Notebooks Jupyter
+      - ./projects:/workspace/projects  # Projet FreshKart migration
+      - ./scripts:/workspace/scripts:ro  # Scripts utilitaires
+      # Pas besoin de monter: venv, .git, .github, docker-*, etc.
     environment:
       - JUPYTER_ENABLE_LAB=yes
       - GRANT_SUDO=yes
